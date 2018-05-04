@@ -30,7 +30,15 @@ class NotesAction
 
     public function getAll(Request $request, Response $response, array $args)
     {
-        $notesToJson = $this->noteResource->fetchAllNotes();
-        return $response->withJson($notesToJson, 200);
+        $notesToJson = $this->noteResource->getAllNotes();
+
+        if ($notesToJson != null) {
+            $arr = array('code' => 200, 'msg' => $notesToJson);
+            return $response->withJson($arr, 200);
+        } else {
+            $arr = array('code' => 204, 'msg' => 'No notes found');
+            return $response->withJson($arr, 204);
+        }
+
     }
 }

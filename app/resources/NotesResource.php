@@ -10,20 +10,24 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
-    public function fetchAllNotes()
+    public function getAllNotes()
     {
         /**
          * @var Notes[] $notes
          */
         $notes = $this->entityManager->getRepository(Notes::class)->findAll();
 
-        $notes = array_map(
-            function (Notes $note) {
-                return $note->getArray();
-            },
-            $notes
-        );
+        if (empty($notes)) {
+            return null;
+        } else {
+            $notes = array_map(
+                function (Notes $note) {
+                    return $note->getArray();
+                },
+                $notes
+            );
 
-        return $notes;
+            return $notes;
+        }
     }
 }
