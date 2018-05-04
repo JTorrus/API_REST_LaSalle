@@ -98,5 +98,99 @@ class Notes
      */
     private $user;
 
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getPrivate(): ?bool
+    {
+        return $this->private;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag1(): ?string
+    {
+        return $this->tag1;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag2(): ?string
+    {
+        return $this->tag2;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag3(): ?string
+    {
+        return $this->tag3;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag4(): ?string
+    {
+        return $this->tag4;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getBook(): ?string
+    {
+        return $this->book;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getCreatedata(): ?\DateTime
+    {
+        return $this->createdata;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getLastmodificationdata(): ?\DateTime
+    {
+        return $this->lastmodificationdata;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
 }
