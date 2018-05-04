@@ -193,4 +193,12 @@ class Notes
     {
         return $this->user;
     }
+
+    /**
+     * @return array
+     */
+    public function getArray()
+    {
+        return get_object_vars($this);
+    }
 }

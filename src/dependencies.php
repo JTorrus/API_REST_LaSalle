@@ -31,6 +31,6 @@ $container['em'] = function ($c) {
 };
 
 $container[\app\src\Action\NoteAction::class] = function ($c) {
-    $noteEntityManager = new \App\src\Action\NoteAction($c["em"]);
-    return $noteEntityManager;
+    $notes = new \app\resources\NoteResource($c["em"]);
+    return new app\src\Action\NoteAction($notes);
 };

@@ -11,7 +11,7 @@ namespace app;
 
 use Doctrine\ORM\EntityManager;
 
-class AbstractResource
+abstract class AbstractResource
 {
     /**
      * @var EntityManager
