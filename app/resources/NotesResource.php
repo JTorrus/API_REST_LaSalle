@@ -36,6 +36,9 @@ class NotesResource extends AbstractResource
     {
         $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
 
+        if (empty($publicNotes)){
+            return null;
+        }
         $publicNotes = array_map(
             function (Notes $note) {
                 return $note->getArray();
@@ -44,7 +47,8 @@ class NotesResource extends AbstractResource
         );
 
         return $publicNotes;
-
     }
+
+
 
 }
