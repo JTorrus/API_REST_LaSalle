@@ -6,9 +6,7 @@ use Slim\Http\Response;
 
 // Routes
 
-$app->get('/', function (Request $request, Response $response) {
-
-});
+$app->get('/', NotesAction::class . ':getMainPage');
 
 $app->get('/getAll', NotesAction::class . ':getAll');
 

@@ -27,12 +27,12 @@ class NotesAction
         $this->noteResource = $noteResource;
     }
 
-    public function getMainPage()
+    public function getMainPage(Request $request, Response $response, array $args)
     {
         $mainPageToJson = $this->noteResource->resolveMainPage();
+        return $response->withJson($mainPageToJson, 200);
 
     }
-
 
     public function getAll(Request $request, Response $response, array $args)
     {
