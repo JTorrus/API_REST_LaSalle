@@ -5,7 +5,7 @@ namespace app\resources;
 use app\AbstractResource;
 use app\src\Entity\Notes;
 
-class NoteResource extends AbstractResource
+class NotesResource extends AbstractResource
 {
     /**
      * @return array

@@ -8,21 +8,21 @@
 
 namespace app\src\Action;
 
-use app\resources\NoteResource;
+use app\resources\NotesResource;
 use app\src\Entity\Notes;
 use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class NoteAction
+class NotesAction
 {
     private $noteResource;
 
     /**
-     * NoteAction constructor.
+     * NotesAction constructor.
      * @param $noteResource
      */
-    public function __construct(NoteResource $noteResource)
+    public function __construct(NotesResource $noteResource)
     {
         $this->noteResource = $noteResource;
     }

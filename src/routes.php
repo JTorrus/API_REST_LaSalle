@@ -1,6 +1,6 @@
 <?php
 
-use app\src\Action\NoteAction;
+use app\src\Action\NotesAction;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -10,7 +10,7 @@ $app->get('/', function (Request $request, Response $response) {
 
 });
 
-$app->get('/getAll', NoteAction::class . ':getAll');
+$app->get('/getAll', NotesAction::class . ':getAll');
 
 $app->get('/getPublic', function (Request $request, Response $response) {
 

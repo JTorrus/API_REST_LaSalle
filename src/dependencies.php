@@ -30,7 +30,7 @@ $container['em'] = function ($c) {
     return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
 };
 
-$container[\app\src\Action\NoteAction::class] = function ($c) {
-    $notes = new \app\resources\NoteResource($c["em"]);
-    return new app\src\Action\NoteAction($notes);
+$container[\app\src\Action\NotesAction::class] = function ($c) {
+    $notes = new \app\resources\NotesResource($c["em"]);
+    return new app\src\Action\NotesAction($notes);
 };
