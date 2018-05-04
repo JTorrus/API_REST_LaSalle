@@ -1,6 +1,5 @@
 <?php
 // DIC configuration
-
 $container = $app->getContainer();
 
 // view renderer
@@ -18,6 +17,7 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+// Doctrine
 $container['em'] = function ($c) {
     $settings = $c->get('settings');
     $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
@@ -27,10 +27,10 @@ $container['em'] = function ($c) {
         $settings['doctrine']['meta']['cache'],
         false
     );
-
     return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
 };
 
-$container[App\src\Action\NoteAction::class] = function ($c) {
-    return new App\src\Action\NoteAction($c['em']);
+$container[\app\src\Action\NoteAction::class] = function ($c) {
+    $noteEntityManager = new \App\src\Action\NoteAction($c["em"]);
+    return $noteEntityManager;
 };
