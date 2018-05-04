@@ -3,8 +3,8 @@
 $base = __DIR__ . '/../app/';
 
 $folders = [
-    'models',
-    'controllers'
+    'src/Entity/',
+    'src/Action/'
 ];
 
 foreach ($folders as $f) {

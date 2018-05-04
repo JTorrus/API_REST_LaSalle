@@ -21,7 +21,7 @@ return [
                 'host'     => 'localhost',
                 'dbname'   => 'm06practicaslim',
                 'user'     => 'root',
-                'password' => '',
+                'password' => null,
             ]
         ],
 
