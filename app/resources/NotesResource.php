@@ -26,4 +26,21 @@ class NotesResource extends AbstractResource
 
         return $notes;
     }
+
+
+    public function fetchAllPublicNotes()
+    {
+        $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
+
+        $publicNotes = array_map(
+            function (Notes $note) {
+                return $note->getArray();
+            },
+            $publicNotes
+        );
+
+        return $publicNotes;
+
+    }
+
 }

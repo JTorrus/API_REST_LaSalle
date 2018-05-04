@@ -12,6 +12,8 @@ $app->get('/', function (Request $request, Response $response) {
 
 $app->get('/getAll', NotesAction::class . ':getAll');
 
+$app->get('/getAllPublic', NotesAction::class . ':getAllPublic');
+
 $app->get('/getPublic', function (Request $request, Response $response) {
 
 });
