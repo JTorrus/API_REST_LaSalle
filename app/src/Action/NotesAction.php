@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alumne
- * Date: 04/05/2018
- * Time: 18:54
- */
 
 namespace app\src\Action;
 
 use app\resources\NotesResource;
-use app\src\Entity\Notes;
-use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -50,16 +42,13 @@ class NotesAction
     {
         $publicNotesToJson = $this->noteResource->fetchAllPublicNotes();
 
-        if ($publicNotesToJson != null) {
-            $arr = array('code' => 200, 'msg' => $publicNotesToJson);
-            return $response->withJson($arr, 200);
+        if ($publicNotesToJson['code'] == 200) {
+            return $response->withJson($publicNotesToJson, 200);
         } else {
-            $arr = array('code' => 204, 'msg' => 'No notes found');
-            return $response->withJson($arr, 204);
+            return $response->withJson($publicNotesToJson, 204);
         }
 
     }
-
 
     public function getOne(Request $request, Response $response, array $args)
     {

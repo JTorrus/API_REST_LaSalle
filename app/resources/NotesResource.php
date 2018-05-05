@@ -46,19 +46,25 @@ class NotesResource extends AbstractResource
 
     public function fetchAllPublicNotes()
     {
+        /**
+         * @var Notes[] $publicNotes
+         */
         $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
 
         if (empty($publicNotes)) {
-            return null;
-        }
-        $publicNotes = array_map(
-            function (Notes $note) {
-                return $note->getArray();
-            },
-            $publicNotes
-        );
+            $arr = array('code' => 204, 'msg' => 'No notes found');
+            return $arr;
+        } else {
+            $publicNotes = array_map(
+                function (Notes $note) {
+                    return $note->getArray();
+                },
+                $publicNotes
+            );
 
-        return $publicNotes;
+            $arr = array('code' => 200, 'msg' => $publicNotes);
+            return $arr;
+        }
     }
 
 
