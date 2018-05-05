@@ -64,16 +64,16 @@ class NotesResource extends AbstractResource
 
     public function fetchOne($id)
     {
-        try {
-            $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
-        } catch (ORMException $e) {
-        }
+        /**
+         * @var Notes $note
+         */
+        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
         if (empty($note)) {
-            return null;
+            return array('code' => 204, 'msg' => 'No notes found with that id');
+        } else {
+            return array('code' => 200, 'msg' => $note->getArray());
         }
-
-        return $note->getArray();
     }
 
 

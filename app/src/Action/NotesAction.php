@@ -38,7 +38,7 @@ class NotesAction
     {
         $notesToJson = $this->noteResource->getAllNotes();
 
-        if ($notesToJson != null) {
+        if ($notesToJson['code'] == 200) {
             return $response->withJson($notesToJson, 200);
         } else {
             return $response->withJson($notesToJson, 204);
@@ -61,22 +61,24 @@ class NotesAction
     }
 
 
-    public function getOne(Request $request, Response $response, array $args){
+    public function getOne(Request $request, Response $response, array $args)
+    {
         $id = $request->getParam('id');
         $noteToJson = $this->noteResource->fetchOne($id);
-        if ($noteToJson != null) {
-            $arr = array('code' => 200, 'msg' => $noteToJson);
-            return $response->withJson($arr, 200);
+
+        if ($noteToJson['code'] == 200) {
+            return $response->withJson($noteToJson, 200);
+        } else {
+            return $response->withJson($noteToJson, 204);
         }
-        $arr = array('code' => 204, 'msg' => 'No notes found');
-        return $response->withJson($arr, 204);
     }
 
 
-    public function removeOne(Request $request, Response $response, array $args){
+    public function removeOne(Request $request, Response $response, array $args)
+    {
         $responseStatus = $response->getStatusCode();
         $id = $request->getParam('id');
-        if ($responseStatus == 200){
+        if ($responseStatus == 200) {
             $this->noteResource->deleteOne($id);
             $arr = array('code' => $responseStatus, 'msg' => 'Note deleted successfully');
             return $response->withJson($arr, $responseStatus);
@@ -84,10 +86,6 @@ class NotesAction
         $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
         return $response->withJson($arr, $responseStatus);
     }
-
-
-
-
 
 
 }
