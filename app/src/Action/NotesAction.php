@@ -134,4 +134,49 @@ class NotesAction
             return $response->withJson($arr, $responseStatus);
         }
     }
+
+    public function removeTagOnNote(Request $request, Response $response, array $args)
+    {
+        $responseStatus = $response->getStatusCode();
+        $id = $request->getParam('id');
+        $tag = $request->getParam('tag');
+
+        if ($responseStatus == 200) {
+            $newNote = $this->noteResource->removeTagOnOne($id, $tag);
+            if ($newNote != null) {
+                $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
+                return $response->withJson($arr, $responseStatus);
+            } else {
+
+                $arr = array('code' => $responseStatus, 'msg' => 'The tag ' . $tag . " does not exists in this note");
+                return $response->withJson($arr, $responseStatus);
+            }
+
+        }
+        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
+        return $response->withJson($arr, $responseStatus);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function flipPrivate(Request $request, Response $response, array $args)
+    {
+        $responseStatus = $response->getStatusCode();
+        $id = $request->getParam('id');
+
+        if ($responseStatus == 200) {
+
+            $newNote = $this->noteResource->flipPrivateOnOne($id);
+            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
+            return $response->withJson($arr, $responseStatus);
+        }
+        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
+        return $response->withJson($arr, $responseStatus);
+    }
 }

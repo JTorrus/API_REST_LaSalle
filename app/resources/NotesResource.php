@@ -154,4 +154,59 @@ class NotesResource extends AbstractResource
             }
         }
     }
+
+    /**
+     * @param $id
+     * @param $tag
+     * @return array|null
+     * @throws ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function removeTagOnOne($id, $tag)
+    {
+        /** @var Notes $note */
+        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+
+        if ($note->getTag1() == $tag) {
+            $note->setTag1("");
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } elseif ($note->getTag2() == $tag) {
+            $note->setTag2("");
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } elseif ($note->getTag3() == $tag) {
+            $note->setTag3("");
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } elseif ($note->getTag4() == $tag) {
+            $note->setTag4("");
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } else {
+            return null;
+        }
+
+        return $note->getArray();
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function flipPrivateOnOne($id)
+    {
+        /** @var Notes $note */
+        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+
+
+        $note->setPrivate(!$note->getPrivate());
+
+        $this->entityManager->merge($note);
+        $this->entityManager->flush();
+
+        return $note->getArray();
+    }
 }
