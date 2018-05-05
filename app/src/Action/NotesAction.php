@@ -27,30 +27,37 @@ class NotesAction
         $this->noteResource = $noteResource;
     }
 
+    public function getMainPage(Request $request, Response $response, array $args)
+    {
+        $mainPageToJson = $this->noteResource->resolveMainPage();
+        return $response->withJson($mainPageToJson, 200);
+
+    }
 
     public function getAll(Request $request, Response $response, array $args)
     {
         $notesToJson = $this->noteResource->getAllNotes();
 
         if ($notesToJson != null) {
-            $arr = array('code' => 200, 'msg' => $notesToJson);
+            return $response->withJson($notesToJson, 200);
+        } else {
+            return $response->withJson($notesToJson, 204);
+        }
+
+    }
+
+    public function getAllPublic(Request $request, Response $response, array $args)
+    {
+        $publicNotesToJson = $this->noteResource->fetchAllPublicNotes();
+
+        if ($publicNotesToJson != null) {
+            $arr = array('code' => 200, 'msg' => $publicNotesToJson);
             return $response->withJson($arr, 200);
         } else {
             $arr = array('code' => 204, 'msg' => 'No notes found');
             return $response->withJson($arr, 204);
         }
 
-    }
-
-    public function getAllPublic(Request $request, Response $response, array $args) {
-        $publicNotesToJson = $this->noteResource->fetchAllPublicNotes();
-
-        if ($publicNotesToJson != null) {
-            $arr = array('code' => 200, 'msg' => $publicNotesToJson);
-            return $response->withJson($arr, 200);
-        }
-        $arr = array('code' => 204, 'msg' => 'No notes found');
-        return $response->withJson($arr, 204);
     }
 
 

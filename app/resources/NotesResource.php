@@ -11,6 +11,15 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
+    public function resolveMainPage()
+    {
+        $mainPage = array('code' => 200, 'msg' => 'LSNote API v0.1');
+        return $mainPage;
+    }
+
+    /**
+     * @return array
+     */
     public function getAllNotes()
     {
         /**
@@ -19,7 +28,8 @@ class NotesResource extends AbstractResource
         $notes = $this->entityManager->getRepository(Notes::class)->findAll();
 
         if (empty($notes)) {
-            return null;
+            $arr = array('code' => 204, 'msg' => 'No notes found');
+            return $arr;
         } else {
             $notes = array_map(
                 function (Notes $note) {
@@ -28,7 +38,8 @@ class NotesResource extends AbstractResource
                 $notes
             );
 
-            return $notes;
+            $arr = array('code' => 200, 'msg' => $notes);
+            return $arr;
         }
     }
 
