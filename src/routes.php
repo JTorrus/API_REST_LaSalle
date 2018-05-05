@@ -24,14 +24,8 @@ $app->get('/getAllWithTag', NotesAction::class . ':addTagOnNote');
 
 $app->put('/addTagOnNote', NotesAction::class . ':addTagOnNote');
 
-$app->delete('deleteTagOnNote/{id}', function (Request $request, Response $response, array $args) {
+$app->put('/deleteTagOnNote', NotesAction::class . ':removeTagOnNote');
 
-});
+$app->put('/updateNote', NotesAction::class . ':updateNote');
 
-$app->put('/updateNote/{id}[/{params:.*}]', function (Request $request, Response $response, array $args) {
-
-});
-
-$app->put('/flipPrivate/{id}', function (Request $request, Response $response, array $args) {
-
-});
+$app->put('/flipPrivate', NotesAction::class . ':flipPrivate');
