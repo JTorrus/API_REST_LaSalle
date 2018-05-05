@@ -46,7 +46,7 @@ class NotesAction
 
     }
 
-    public function getAllPublic(Request $request, Response $response, array $args)
+    public function getPublic(Request $request, Response $response, array $args)
     {
         $publicNotesToJson = $this->noteResource->fetchAllPublicNotes();
 

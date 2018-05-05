@@ -10,11 +10,7 @@ $app->get('/', NotesAction::class . ':getMainPage');
 
 $app->get('/getAll', NotesAction::class . ':getAll');
 
-$app->get('/getAllPublic', NotesAction::class . ':getAllPublic');
-
-$app->get('/getPublic', function (Request $request, Response $response) {
-
-});
+$app->get('/getPublic', NotesAction::class . ':getPublic');
 
 $app->get('/getOne', NotesAction::class . ':getOne');
 
