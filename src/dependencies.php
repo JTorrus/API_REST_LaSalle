@@ -1,5 +1,6 @@
 <?php
 // DIC configuration
+
 $container = $app->getContainer();
 
 // view renderer
@@ -30,7 +31,17 @@ $container['em'] = function ($c) {
     return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
 };
 
+// Notes Controller
 $container[\app\src\Action\NotesAction::class] = function ($c) {
     $notes = new \app\resources\NotesResource($c["em"]);
     return new app\src\Action\NotesAction($notes);
+};
+
+// Custom Not Found Handler
+$container['notFoundHandler'] = function ($c) {
+    return function (\Slim\Http\Request $request, \Slim\Http\Response $response) use ($c) {
+        $arr = array('code' => 404, 'msg' => 'This route does not exist');
+
+        return $c['response']->withJson($arr, 404);
+    };
 };

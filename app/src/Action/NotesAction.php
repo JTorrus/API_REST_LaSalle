@@ -124,7 +124,7 @@ class NotesAction
         $responseStatus = $response->getStatusCode();
 
         if ($responseStatus == 200) {
-            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
+            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully');
             return $response->withJson($arr, $responseStatus);
         } else if ($responseStatus == 204) {
             $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
