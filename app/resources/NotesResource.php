@@ -103,7 +103,7 @@ class NotesResource extends AbstractResource
             $this->entityManager->flush();
             return 200;
         } catch (ORMException $exception) {
-            return 204;
+            return 409;
         }
     }
 
@@ -120,32 +120,38 @@ class NotesResource extends AbstractResource
          */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
-        if (empty($note->getTag1())) {
-            $note->setTag1($tag);
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
+        if (empty($note)) {
+            return 204;
         } else {
-            if (empty($note->getTag2())) {
-                $note->setTag2($tag);
+            if (empty($note->getTag1())) {
+                $note->setTag1($tag);
                 $this->entityManager->merge($note);
                 $this->entityManager->flush();
+                return 200;
             } else {
-                if (empty($note->getTag3())) {
-                    $note->setTag3($tag);
+                if (empty($note->getTag2())) {
+                    $note->setTag2($tag);
                     $this->entityManager->merge($note);
                     $this->entityManager->flush();
+                    return 200;
                 } else {
-                    if (empty($note->getTag4())) {
-                        $note->setTag4($tag);
+                    if (empty($note->getTag3())) {
+                        $note->setTag3($tag);
                         $this->entityManager->merge($note);
                         $this->entityManager->flush();
+                        return 200;
                     } else {
-                        return null;
+                        if (empty($note->getTag4())) {
+                            $note->setTag4($tag);
+                            $this->entityManager->merge($note);
+                            $this->entityManager->flush();
+                            return 200;
+                        } else {
+                            return 409;
+                        }
                     }
                 }
             }
         }
-
-        return $note->getArray();
     }
 }

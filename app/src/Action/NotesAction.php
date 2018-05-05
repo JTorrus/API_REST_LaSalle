@@ -115,30 +115,23 @@ class NotesAction
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      */
-    public function addTagOnNote(Request $request, Response $response, array $args){
+    public function addTagOnNote(Request $request, Response $response, array $args)
+    {
         $id = $request->getParam('id');
         $tag = $request->getParam('tag');
+        $response->withStatus($this->noteResource->addTagOnNoteAction($id, $tag));
 
         $responseStatus = $response->getStatusCode();
 
-        if ($responseStatus == 200){
-            $newNote = $this->noteResource->addTagOnNoteAction($id, $tag);
-
-            if ($newNote != null){
-                $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
-                return $response->withJson($arr, $responseStatus);
-            }else{
-                $arr = array('code' => $responseStatus, 'msg' => 'The note has too much tags');
-                return $response->withJson($arr, $responseStatus);
-            }
-
+        if ($responseStatus == 200) {
+            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
+            return $response->withJson($arr, $responseStatus);
+        } else if ($responseStatus == 204) {
+            $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
+            return $response->withJson($arr, $responseStatus);
+        } else {
+            $arr = array('code' => $responseStatus, 'msg' => 'The note has too much tags');
+            return $response->withJson($arr, $responseStatus);
         }
-        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
-        return $response->withJson($arr, $responseStatus);
-
     }
-
-
-
-
 }
