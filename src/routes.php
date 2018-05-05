@@ -24,13 +24,9 @@ $app->post('/insert/{id}', function (Request $request, Response $response, array
 
 $app->delete('/remove', NotesAction::class . ':removeOne');
 
-$app->get('getAllWithTag/{tag}', function (Request $request, Response $response, array $args) {
+$app->get('/getAllWithTag', NotesAction::class . ':addTagOnNote');
 
-});
-
-$app->put('addTagOnNote/{id}/{tag}', function (Request $request, Response $response, array $args) {
-
-});
+$app->put('/addTagOnNote', NotesAction::class . ':addTagOnNote');
 
 $app->delete('deleteTagOnNote/{id}', function (Request $request, Response $response, array $args) {
 

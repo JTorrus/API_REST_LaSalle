@@ -85,6 +85,37 @@ class NotesAction
         return $response->withJson($arr, $responseStatus);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function addTagOnNote(Request $request, Response $response, array $args){
+        $responseStatus = $response->getStatusCode();
+        $id = $request->getParam('id');
+        $tag = $request->getParam('tag');
+
+        if ($responseStatus == 200){
+
+            $newNote = $this->noteResource->addTagOnOne($id, $tag);
+            if ($newNote != null){
+                $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
+                return $response->withJson($arr, $responseStatus);
+            }else{
+                $arr = array('code' => $responseStatus, 'msg' => 'The note has too much tags');
+                return $response->withJson($arr, $responseStatus);
+            }
+
+        }
+        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
+        return $response->withJson($arr, $responseStatus);
+
+    }
+
+
+
 
 
 
