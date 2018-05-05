@@ -10,11 +10,7 @@ $app->get('/', NotesAction::class . ':getMainPage');
 
 $app->get('/getAll', NotesAction::class . ':getAll');
 
-$app->get('/getAllPublic', NotesAction::class . ':getAllPublic');
-
-$app->get('/getPublic', function (Request $request, Response $response) {
-
-});
+$app->get('/getPublic', NotesAction::class . ':getPublic');
 
 $app->get('/getOne', NotesAction::class . ':getOne');
 
@@ -22,7 +18,7 @@ $app->post('/insert/{id}', function (Request $request, Response $response, array
 
 });
 
-$app->delete('/remove', NotesAction::class . ':removeOne');
+$app->delete('/remove', NotesAction::class . ':remove');
 
 $app->get('/getAllWithTag', NotesAction::class . ':addTagOnNote');
 
