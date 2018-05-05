@@ -16,13 +16,13 @@ $app->get('/getPublic', function (Request $request, Response $response) {
 
 });
 
-$app->get('/getOne/{id}', NotesAction::class . ':getOne');
+$app->get('/getOne', NotesAction::class . ':getOne');
 
 $app->post('/insert/{id}', function (Request $request, Response $response, array $args) {
 
 });
 
-$app->delete('remove/{id}', NotesAction::class . ':removeOne');
+$app->delete('/remove', NotesAction::class . ':removeOne');
 
 $app->get('getAllWithTag/{tag}', function (Request $request, Response $response, array $args) {
 

@@ -62,8 +62,8 @@ class NotesAction
 
 
     public function getOne(Request $request, Response $response, array $args){
-        $noteToJson = $this->noteResource->fetchOne($args);
-
+        $id = $request->getParam('id');
+        $noteToJson = $this->noteResource->fetchOne($id);
         if ($noteToJson != null) {
             $arr = array('code' => 200, 'msg' => $noteToJson);
             return $response->withJson($arr, 200);
@@ -75,14 +75,17 @@ class NotesAction
 
     public function removeOne(Request $request, Response $response, array $args){
         $responseStatus = $response->getStatusCode();
+        $id = $request->getParam('id');
         if ($responseStatus == 200){
-            $this->noteResource->deleteOne($args);
+            $this->noteResource->deleteOne($id);
             $arr = array('code' => $responseStatus, 'msg' => 'Note deleted successfully');
             return $response->withJson($arr, $responseStatus);
         }
         $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
         return $response->withJson($arr, $responseStatus);
     }
+
+
 
 
 

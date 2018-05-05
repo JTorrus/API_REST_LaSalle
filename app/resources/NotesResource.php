@@ -76,11 +76,13 @@ class NotesResource extends AbstractResource
         return $note->getArray();
     }
 
+
     public function deleteOne($id)
     {
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
         try {
             $this->entityManager->remove($note);
+            $this->entityManager->flush();
         } catch (ORMException $e) {
         }
     }
