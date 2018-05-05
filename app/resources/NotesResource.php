@@ -120,85 +120,38 @@ class NotesResource extends AbstractResource
          */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
-        if (empty($note->getTag1())) {
-            $note->setTag1($tag);
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif (empty($note->getTag2())) {
-            $note->setTag2($tag);
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif (empty($note->getTag3())) {
-            $note->setTag3($tag);
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif (empty($note->getTag4())) {
-            $note->setTag4($tag);
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
+        if (empty($note)) {
+            return 204;
         } else {
-            return null;
-        }
-        return $note->getArray();
-    }
-
-
-    /**
-     * @param $id
-     * @param $tag
-     * @return int
-     * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function removeTagOnOne($id, $tag)
-    {
-        /** @var Notes $note */
-        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
-
-        if (empty($note)){
-           return 204;
-        }else{
-            if ($note->getTag1() == $tag) {
-                $note->setTag1("");
+            if (empty($note->getTag1())) {
+                $note->setTag1($tag);
                 $this->entityManager->merge($note);
                 $this->entityManager->flush();
-            } elseif ($note->getTag2() == $tag) {
-                $note->setTag2("");
-                $this->entityManager->merge($note);
-                $this->entityManager->flush();
-            } elseif ($note->getTag3() == $tag) {
-                $note->setTag3("");
-                $this->entityManager->merge($note);
-                $this->entityManager->flush();
-            } elseif ($note->getTag4() == $tag) {
-                $note->setTag4("");
-                $this->entityManager->merge($note);
-                $this->entityManager->flush();
+                return 200;
             } else {
-                return 409;
+                if (empty($note->getTag2())) {
+                    $note->setTag2($tag);
+                    $this->entityManager->merge($note);
+                    $this->entityManager->flush();
+                    return 200;
+                } else {
+                    if (empty($note->getTag3())) {
+                        $note->setTag3($tag);
+                        $this->entityManager->merge($note);
+                        $this->entityManager->flush();
+                        return 200;
+                    } else {
+                        if (empty($note->getTag4())) {
+                            $note->setTag4($tag);
+                            $this->entityManager->merge($note);
+                            $this->entityManager->flush();
+                            return 200;
+                        } else {
+                            return 409;
+                        }
+                    }
+                }
             }
-            return 200;
         }
-
-    }
-
-    /**
-     * @param $id
-     * @return array
-     * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function flipPrivateOnOne($id)
-    {
-        /** @var Notes $note */
-        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
-
-
-        $note->setPrivate(!$note->getPrivate());
-
-        $this->entityManager->merge($note);
-        $this->entityManager->flush();
-
-        return $note->getArray();
     }
 }
