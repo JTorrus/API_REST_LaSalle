@@ -19,13 +19,25 @@ class NotesAction
         $this->noteResource = $noteResource;
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getMainPage(Request $request, Response $response, array $args)
     {
-        $mainPageToJson = $this->noteResource->mainPageAction();
+        $mainPageToJson = $this->noteResource->getMainPageAction();
         return $response->withJson($mainPageToJson, 200);
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getAll(Request $request, Response $response, array $args)
     {
         $notesToJson = $this->noteResource->getAllAction();
@@ -38,6 +50,12 @@ class NotesAction
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getPublic(Request $request, Response $response, array $args)
     {
         $publicNotesToJson = $this->noteResource->getPublicAction();
@@ -50,6 +68,12 @@ class NotesAction
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getOne(Request $request, Response $response, array $args)
     {
         $id = $request->getParam('id');
@@ -62,18 +86,25 @@ class NotesAction
         }
     }
 
-
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function remove(Request $request, Response $response, array $args)
     {
         $id = $request->getParam('id');
         $response->withStatus($this->noteResource->removeAction($id));
 
-        if ($response->getStatusCode() == 200) {
-            $arr = array('code' => $response->getStatusCode(), 'msg' => 'Note deleted');
-            return $response->withJson($arr, $response->getStatusCode());
+        $responseStatus = $response->getStatusCode();
+
+        if ($responseStatus == 200) {
+            $arr = array('code' => $responseStatus, 'msg' => 'Note deleted');
+            return $response->withJson($arr, $responseStatus);
         } else {
-            $arr = array('code' => $response->getStatusCode(), 'msg' => 'Note could not be deleted, try again');
-            return $response->withJson($arr, $response->getStatusCode());
+            $arr = array('code' => $responseStatus, 'msg' => 'Note could not be deleted, try again');
+            return $response->withJson($arr, $responseStatus);
         }
     }
 
@@ -85,13 +116,14 @@ class NotesAction
      * @throws \Doctrine\ORM\ORMException
      */
     public function addTagOnNote(Request $request, Response $response, array $args){
-        $responseStatus = $response->getStatusCode();
         $id = $request->getParam('id');
         $tag = $request->getParam('tag');
 
-        if ($responseStatus == 200){
+        $responseStatus = $response->getStatusCode();
 
-            $newNote = $this->noteResource->addTagOnOne($id, $tag);
+        if ($responseStatus == 200){
+            $newNote = $this->noteResource->addTagOnNoteAction($id, $tag);
+
             if ($newNote != null){
                 $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
                 return $response->withJson($arr, $responseStatus);

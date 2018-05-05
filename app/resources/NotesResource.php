@@ -11,7 +11,7 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
-    public function mainPageAction()
+    public function getMainPageAction()
     {
         $mainPage = array('code' => 200, 'msg' => 'LSNote API v0.1');
         return $mainPage;
@@ -43,7 +43,9 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @return array
+     */
     public function getPublicAction()
     {
         /**
@@ -67,7 +69,10 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @param $id
+     * @return array
+     */
     public function getOneAction($id)
     {
         /**
@@ -82,7 +87,10 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @param $id
+     * @return int
+     */
     public function removeAction($id)
     {
         /**
@@ -105,32 +113,33 @@ class NotesResource extends AbstractResource
      * @return null
      * @throws ORMException
      */
-    public function addTagOnOne($id, $tag)
+    public function addTagOnNoteAction($id, $tag)
     {
-        /** @var Notes $note */
+        /**
+         * @var Notes $note
+         */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
-        if (empty($note->getTag1())){
+        if (empty($note->getTag1())) {
             $note->setTag1($tag);
             $this->entityManager->merge($note);
             $this->entityManager->flush();
-        }else{
-            if (empty($note->getTag2())){
+        } else {
+            if (empty($note->getTag2())) {
                 $note->setTag2($tag);
                 $this->entityManager->merge($note);
                 $this->entityManager->flush();
-            }else{
-                if (empty($note->getTag3())){
+            } else {
+                if (empty($note->getTag3())) {
                     $note->setTag3($tag);
                     $this->entityManager->merge($note);
                     $this->entityManager->flush();
-                }
-                else{
-                    if (empty($note->getTag4())){
+                } else {
+                    if (empty($note->getTag4())) {
                         $note->setTag4($tag);
                         $this->entityManager->merge($note);
                         $this->entityManager->flush();
-                    }else{
+                    } else {
                         return null;
                     }
                 }
@@ -139,6 +148,4 @@ class NotesResource extends AbstractResource
 
         return $note->getArray();
     }
-
-
 }
