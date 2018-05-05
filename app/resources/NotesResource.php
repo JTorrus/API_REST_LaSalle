@@ -11,7 +11,7 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
-    public function mainPageAction()
+    public function getMainPageAction()
     {
         $mainPage = array('code' => 200, 'msg' => 'LSNote API v0.1');
         return $mainPage;
@@ -43,7 +43,9 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @return array
+     */
     public function getPublicAction()
     {
         /**
@@ -67,7 +69,10 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @param $id
+     * @return array
+     */
     public function getOneAction($id)
     {
         /**
@@ -82,7 +87,10 @@ class NotesResource extends AbstractResource
         }
     }
 
-
+    /**
+     * @param $id
+     * @return int
+     */
     public function removeAction($id)
     {
         /**
@@ -95,19 +103,21 @@ class NotesResource extends AbstractResource
             $this->entityManager->flush();
             return 200;
         } catch (ORMException $exception) {
-            return 204;
+            return 409;
         }
     }
 
     /**
      * @param $id
      * @param $tag
-     * @return array|null
+     * @return null
      * @throws ORMException
      */
-    public function addTagOnOne($id, $tag)
+    public function addTagOnNoteAction($id, $tag)
     {
-        /** @var Notes $note */
+        /**
+         * @var Notes $note
+         */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
         if (empty($note->getTag1())) {
@@ -136,7 +146,7 @@ class NotesResource extends AbstractResource
     /**
      * @param $id
      * @param $tag
-     * @return array|null
+     * @return int
      * @throws ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -145,27 +155,31 @@ class NotesResource extends AbstractResource
         /** @var Notes $note */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
-        if ($note->getTag1() == $tag) {
-            $note->setTag1("");
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif ($note->getTag2() == $tag) {
-            $note->setTag2("");
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif ($note->getTag3() == $tag) {
-            $note->setTag3("");
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } elseif ($note->getTag4() == $tag) {
-            $note->setTag4("");
-            $this->entityManager->merge($note);
-            $this->entityManager->flush();
-        } else {
-            return null;
+        if (empty($note)){
+           return 204;
+        }else{
+            if ($note->getTag1() == $tag) {
+                $note->setTag1("");
+                $this->entityManager->merge($note);
+                $this->entityManager->flush();
+            } elseif ($note->getTag2() == $tag) {
+                $note->setTag2("");
+                $this->entityManager->merge($note);
+                $this->entityManager->flush();
+            } elseif ($note->getTag3() == $tag) {
+                $note->setTag3("");
+                $this->entityManager->merge($note);
+                $this->entityManager->flush();
+            } elseif ($note->getTag4() == $tag) {
+                $note->setTag4("");
+                $this->entityManager->merge($note);
+                $this->entityManager->flush();
+            } else {
+                return 409;
+            }
+            return 200;
         }
 
-        return $note->getArray();
     }
 
     /**
@@ -187,6 +201,4 @@ class NotesResource extends AbstractResource
 
         return $note->getArray();
     }
-
-
 }
