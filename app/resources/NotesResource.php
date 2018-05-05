@@ -11,7 +11,7 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
-    public function resolveMainPage()
+    public function mainPageAction()
     {
         $mainPage = array('code' => 200, 'msg' => 'LSNote API v0.1');
         return $mainPage;
@@ -20,7 +20,7 @@ class NotesResource extends AbstractResource
     /**
      * @return array
      */
-    public function getAllNotes()
+    public function getAllAction()
     {
         /**
          * @var Notes[] $notes
@@ -44,7 +44,7 @@ class NotesResource extends AbstractResource
     }
 
 
-    public function fetchAllPublicNotes()
+    public function getPublicAction()
     {
         /**
          * @var Notes[] $publicNotes
@@ -68,7 +68,7 @@ class NotesResource extends AbstractResource
     }
 
 
-    public function fetchOne($id)
+    public function getOneAction($id)
     {
         /**
          * @var Notes $note
@@ -83,15 +83,19 @@ class NotesResource extends AbstractResource
     }
 
 
-    public function deleteOne($id)
+    public function removeAction($id)
     {
+        /**
+         * @var Notes $note
+         */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+
         try {
             $this->entityManager->remove($note);
             $this->entityManager->flush();
-        } catch (ORMException $e) {
+            return 200;
+        } catch (ORMException $exception) {
+            return 204;
         }
     }
-
-
 }

@@ -18,7 +18,7 @@ $app->post('/insert/{id}', function (Request $request, Response $response, array
 
 });
 
-$app->delete('/remove', NotesAction::class . ':removeOne');
+$app->delete('/remove', NotesAction::class . ':remove');
 
 $app->get('getAllWithTag/{tag}', function (Request $request, Response $response, array $args) {
 
