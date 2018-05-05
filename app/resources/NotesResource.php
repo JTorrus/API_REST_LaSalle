@@ -4,6 +4,7 @@ namespace app\resources;
 
 use app\AbstractResource;
 use app\src\Entity\Notes;
+use Doctrine\ORM\ORMException;
 
 class NotesResource extends AbstractResource
 {
@@ -36,7 +37,7 @@ class NotesResource extends AbstractResource
     {
         $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
 
-        if (empty($publicNotes)){
+        if (empty($publicNotes)) {
             return null;
         }
         $publicNotes = array_map(
@@ -49,6 +50,29 @@ class NotesResource extends AbstractResource
         return $publicNotes;
     }
 
+
+    public function fetchOne($id)
+    {
+        try {
+            $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+        } catch (ORMException $e) {
+        }
+
+        if (empty($note)) {
+            return null;
+        }
+
+        return $note->getArray();
+    }
+
+    public function deleteOne($id)
+    {
+        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+        try {
+            $this->entityManager->remove($note);
+        } catch (ORMException $e) {
+        }
+    }
 
 
 }

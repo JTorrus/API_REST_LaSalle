@@ -54,4 +54,30 @@ class NotesAction
     }
 
 
+    public function getOne(Request $request, Response $response, array $args){
+        $noteToJson = $this->noteResource->fetchOne($args);
+
+        if ($noteToJson != null) {
+            $arr = array('code' => 200, 'msg' => $noteToJson);
+            return $response->withJson($arr, 200);
+        }
+        $arr = array('code' => 204, 'msg' => 'No notes found');
+        return $response->withJson($arr, 204);
+    }
+
+
+    public function removeOne(Request $request, Response $response, array $args){
+        $responseStatus = $response->getStatusCode();
+        if ($responseStatus == 200){
+            $this->noteResource->deleteOne($args);
+            $arr = array('code' => $responseStatus, 'msg' => 'Note deleted successfully');
+            return $response->withJson($arr, $responseStatus);
+        }
+        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
+        return $response->withJson($arr, $responseStatus);
+    }
+
+
+
+
 }
