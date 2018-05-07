@@ -167,11 +167,12 @@ class NotesAction
      */
     public function flipPrivate(Request $request, Response $response, array $args)
     {
+        $data = json_decode($request->getBody());
+
         $responseStatus = $response->getStatusCode();
-        $id = $request->getParam('id');
+        $id = $data["id"];
 
         if ($responseStatus == 200) {
-
             $newNote = $this->noteResource->flipPrivateOnOne($id);
             $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
             return $response->withJson($arr, $responseStatus);

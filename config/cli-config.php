@@ -15,6 +15,9 @@ $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
     false
 );
 
-$em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
+try {
+    $em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
+} catch (\Doctrine\ORM\ORMException $e) {
+}
 
 return ConsoleRunner::createHelperSet($em);
