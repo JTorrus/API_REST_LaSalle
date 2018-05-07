@@ -117,14 +117,15 @@ class NotesAction
      */
     public function addTagOnNote(Request $request, Response $response, array $args)
     {
-        $id = $request->getParam('id');
-        $tag = $request->getParam('tag');
-        $response->withStatus($this->noteResource->addTagOnNoteAction($id, $tag));
+        $body = $request->getParsedBody();
+        $id = $body['id'];
+        $tag = $body['tag'];
 
-        $responseStatus = $response->getStatusCode();
+        $responseStatus = $this->noteResource->addTagOnNoteAction($id, $tag);
 
         if ($responseStatus == 200) {
-            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully');
+            $noteToJson = $this->noteResource->getOneAction($id);
+            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'result' => $noteToJson);
             return $response->withJson($arr, $responseStatus);
         } else if ($responseStatus == 204) {
             $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
@@ -135,11 +136,21 @@ class NotesAction
         }
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function removeTagOnNote(Request $request, Response $response, array $args)
     {
         $responseStatus = $response->getStatusCode();
-        $id = $request->getParam('id');
-        $tag = $request->getParam('tag');
+        $body = $request->getParsedBody();
+
+        $id = $body['id'];
+        $tag = $body['tag'];
 
         if ($responseStatus == 200) {
             $newNote = $this->noteResource->removeTagOnOne($id, $tag);
@@ -167,10 +178,10 @@ class NotesAction
      */
     public function flipPrivate(Request $request, Response $response, array $args)
     {
-        $data = json_decode($request->getBody());
+        $data = $request->getParsedBody();
 
         $responseStatus = $response->getStatusCode();
-        $id = $data["id"];
+        $id = $data['id'];
 
         if ($responseStatus == 200) {
             $newNote = $this->noteResource->flipPrivateOnOne($id);
