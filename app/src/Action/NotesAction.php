@@ -104,9 +104,8 @@ class NotesAction
     public function remove(Request $request, Response $response, array $args)
     {
         $id = $request->getParsedBody()['id'];
-        $response->withStatus($this->noteResource->removeAction($id));
 
-        $responseStatus = $response->getStatusCode();
+        $responseStatus = $this->noteResource->removeAction($id);
 
         if ($responseStatus == 200) {
             $arr = array('code' => $responseStatus, 'msg' => 'Note deleted');

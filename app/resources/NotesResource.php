@@ -40,7 +40,7 @@ class NotesResource extends AbstractResource
                  */
                 $notes = $this->entityManager->getRepository(Notes::class)->findBy(
                     array(),
-                    array('content' => strtoupper($optionalSort))
+                    array('createdata' => strtoupper($optionalSort))
                 );
             }
         } else {
@@ -88,7 +88,7 @@ class NotesResource extends AbstractResource
                  */
                 $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(
                     array('private' => false),
-                    array('createData' => strtoupper($optionalSort))
+                    array('createdata' => strtoupper($optionalSort))
                 );
             }
         } else {
@@ -187,6 +187,10 @@ class NotesResource extends AbstractResource
          * @var Notes $note
          */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+
+        if (empty($note)) {
+            return 204;
+        }
 
         try {
             $this->entityManager->remove($note);
