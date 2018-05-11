@@ -14,9 +14,7 @@ $app->get('/getPublic', NotesAction::class . ':getPublic');
 
 $app->get('/getOne', NotesAction::class . ':getOne');
 
-$app->post('/insert/{id}', function (Request $request, Response $response, array $args) {
-
-});
+$app->post('/insert', NotesAction::class . ':insert');
 
 $app->delete('/remove', NotesAction::class . ':remove');
 

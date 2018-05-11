@@ -4,6 +4,7 @@ namespace app\resources;
 
 use app\AbstractResource;
 use app\src\Entity\Notes;
+use DateTime;
 use Doctrine\ORM\ORMException;
 
 class NotesResource extends AbstractResource
@@ -85,6 +86,49 @@ class NotesResource extends AbstractResource
         } else {
             return array('code' => 200, 'msg' => $note->getArray());
         }
+    }
+
+    /**
+     * @param $bodyParameters
+     * @return array|null
+     */
+    public function insertAction($bodyParameters) {
+        $arr = null;
+
+        $title = $bodyParameters["title"];
+        $content = $bodyParameters["content"];
+        $private = $bodyParameters["private"];
+        $tag1 = $bodyParameters["tag1"];
+        $tag2 = $bodyParameters["tag2"];
+        $tag3 = $bodyParameters["tag3"];
+        $tag4 = $bodyParameters["tag4"];
+        $book = $bodyParameters["book"];
+        $createData = new DateTime();
+
+        $notes = new Notes;
+        $notes->setTitle($title);
+        $notes->setContent($content);
+        $notes->setPrivate($private);
+        $notes->setTag1($tag1);
+        $notes->setTag2($tag2);
+        $notes->setTag3($tag3);
+        $notes->setTag4($tag4);
+        $notes->setBook($book);
+        $notes->setCreatedata($createData);
+
+        if ($title != "" || $title != null) {
+            try {
+                $this->entityManager->persist($notes);
+                $this->entityManager->flush($notes);
+                $arr = array('code' => 200, 'msg' => 'Note inserted');
+            } catch (ORMException $e) {
+                $arr = array('code' => 409, 'msg' => 'Could not insert the note');
+            }
+        } else {
+            $arr = array('code' => 409, 'msg' => 'Title must not be null');
+        }
+
+        return $arr;
     }
 
     /**
@@ -194,7 +238,6 @@ class NotesResource extends AbstractResource
     {
         /** @var Notes $note */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
-
 
         $note->setPrivate(!$note->getPrivate());
 

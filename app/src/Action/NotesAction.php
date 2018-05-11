@@ -86,6 +86,13 @@ class NotesAction
         }
     }
 
+    public function insert(Request $request, Response $response, array $args)
+    {
+        $bodyParameters = $request->getParsedBody();
+        $responseMessage = $this->noteResource->insertAction($bodyParameters);
+        return $response->withJson($responseMessage, $responseMessage['code']);
+    }
+
     /**
      * @param Request $request
      * @param Response $response
