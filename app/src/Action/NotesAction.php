@@ -40,7 +40,8 @@ class NotesAction
      */
     public function getAll(Request $request, Response $response, array $args)
     {
-        $notesToJson = $this->noteResource->getAllAction();
+        $optionalSort = $request->getParam('sort') ?: null;
+        $notesToJson = $this->noteResource->getAllAction($optionalSort);
 
         if ($notesToJson['code'] == 200) {
             return $response->withJson($notesToJson, 200);
@@ -58,7 +59,8 @@ class NotesAction
      */
     public function getPublic(Request $request, Response $response, array $args)
     {
-        $publicNotesToJson = $this->noteResource->getPublicAction();
+        $optionalSort = $request->getParam('sort') ?: null;
+        $publicNotesToJson = $this->noteResource->getPublicAction($optionalSort);
 
         if ($publicNotesToJson['code'] == 200) {
             return $response->withJson($publicNotesToJson, 200);
@@ -101,7 +103,7 @@ class NotesAction
      */
     public function remove(Request $request, Response $response, array $args)
     {
-        $id = $request->getParam('id');
+        $id = $request->getParsedBody()['id'];
         $response->withStatus($this->noteResource->removeAction($id));
 
         $responseStatus = $response->getStatusCode();
@@ -115,6 +117,12 @@ class NotesAction
         }
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function getAllWithTag(Request $request, Response $response, array $args)
     {
         $tag = $request->getParam('tag');
@@ -124,6 +132,12 @@ class NotesAction
         return $response->withJson($arrResult, $arrResult['code']);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function updateNote(Request $request, Response $response, array $args)
     {
         $body = $request->getParsedBody();

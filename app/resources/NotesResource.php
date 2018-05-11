@@ -22,14 +22,36 @@ class NotesResource extends AbstractResource
     }
 
     /**
+     * @param string|null $optionalSort
      * @return array
      */
-    public function getAllAction()
+    public function getAllAction($optionalSort = null)
     {
-        /**
-         * @var Notes[] $notes
-         */
-        $notes = $this->entityManager->getRepository(Notes::class)->findAll();
+        if ($optionalSort != null) {
+            if (strtolower($optionalSort) == 'asc') {
+                /**
+                 * @var Notes[] $notes
+                 */
+                $notes = $this->entityManager->getRepository(Notes::class)->findBy(
+                    array(),
+                    array('title' => strtoupper($optionalSort))
+                );
+            } else if (strtolower($optionalSort) == 'desc') {
+                /**
+                 * @var Notes[] $notes
+                 */
+                $notes = $this->entityManager->getRepository(Notes::class)->findBy(
+                    array(),
+                    array('content' => strtoupper($optionalSort))
+                );
+            }
+        } else {
+            /**
+             * @var Notes[] $notes
+             */
+            $notes = $this->entityManager->getRepository(Notes::class)->findAll();
+        }
+
 
         if (empty($notes)) {
             $arr = array('code' => 204, 'msg' => 'No notes found');
@@ -48,14 +70,35 @@ class NotesResource extends AbstractResource
     }
 
     /**
+     * @param string|null $optionalSort
      * @return array
      */
-    public function getPublicAction()
+    public function getPublicAction($optionalSort = null)
     {
-        /**
-         * @var Notes[] $publicNotes
-         */
-        $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
+        if ($optionalSort != null) {
+            if (strtolower($optionalSort) == 'asc') {
+                /**
+                 * @var Notes[] $publicNotes
+                 */
+                $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(
+                    array('private' => false),
+                    array('title' => strtoupper($optionalSort))
+                );
+            } else if (strtolower($optionalSort) == 'desc') {
+                /**
+                 * @var Notes[] $publicNotes
+                 */
+                $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(
+                    array('private' => false),
+                    array('createData' => strtoupper($optionalSort))
+                );
+            }
+        } else {
+            /**
+             * @var Notes[] $publicNotes
+             */
+            $publicNotes = $this->entityManager->getRepository(Notes::class)->findBy(array('private' => false));
+        }
 
         if (empty($publicNotes)) {
             $arr = array('code' => 204, 'msg' => 'No notes found');
@@ -158,7 +201,7 @@ class NotesResource extends AbstractResource
 
     /**
      * @param $tag
-     * @param null $sort
+     * @param string|null $sort
      * @return array|null
      */
     public function getAllWithTagAction($tag, $sort = null)
