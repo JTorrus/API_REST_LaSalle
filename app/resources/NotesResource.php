@@ -5,7 +5,9 @@ namespace app\resources;
 use app\AbstractResource;
 use app\src\Entity\Notes;
 use DateTime;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 
 class NotesResource extends AbstractResource
 {
@@ -92,7 +94,8 @@ class NotesResource extends AbstractResource
      * @param $bodyParameters
      * @return array|null
      */
-    public function insertAction($bodyParameters) {
+    public function insertAction($bodyParameters)
+    {
         $arr = null;
 
         $title = $bodyParameters["title"];
@@ -115,6 +118,7 @@ class NotesResource extends AbstractResource
         $notes->setTag4($tag4);
         $notes->setBook($book);
         $notes->setCreatedata($createData);
+        $notes->setUser("LSAlumne");
 
         if ($title != "" || $title != null) {
             try {
@@ -149,6 +153,99 @@ class NotesResource extends AbstractResource
         } catch (ORMException $exception) {
             return 409;
         }
+    }
+
+    /**
+     * @param $tag
+     * @param null $sort
+     * @return array|null
+     */
+    public function getAllWithTagAction($tag, $sort = null)
+    {
+        $conn = $this->entityManager->getConnection();
+
+        if ($sort == null) {
+            try {
+                $stmt = $conn->prepare(
+                    "SELECT * 
+                              FROM notes 
+                              WHERE tag1 LIKE :tag 
+                              OR tag2 LIKE :tag 
+                              OR tag3 LIKE :tag 
+                              OR tag4 LIKE :tag"
+                );
+                $stmt->bindValue('tag', $tag);
+
+                $stmt->execute();
+            } catch (DBALException $e) {
+                return array('code' => 204, 'msg' => 'No notes found with that tag');
+            }
+
+
+            $notes = $stmt->fetchAll();
+
+
+            if ($notes != null || !empty($notes)) {
+                return array('code' => 200, 'msg' => $notes);
+            } else {
+                return array('code' => 204, 'msg' => 'No notes found with that tag');
+            }
+        } else {
+            if (strtolower($sort) == "asc") {
+                try {
+                    $stmt = $conn->prepare(
+                        "SELECT * 
+                                  FROM notes 
+                                  WHERE tag1 LIKE :tag 
+                                  OR tag2 LIKE :tag 
+                                  OR tag3 LIKE :tag 
+                                  OR tag4 LIKE :tag
+                                  ORDER BY title ASC"
+                    );
+                    $stmt->bindValue('tag', $tag);
+
+                    $stmt->execute();
+                } catch (DBALException $e) {
+
+                }
+
+
+                $notes = $stmt->fetchAll();
+
+                if ($notes != null || !empty($notes)) {
+                    return array('code' => 200, 'msg' => $notes);
+                } else {
+                    return array('code' => 204, 'msg' => 'No notes found with that tag');
+                }
+            } else if (strtolower($sort) == "desc") {
+                try {
+                    $stmt = $conn->prepare(
+                        "SELECT * 
+                                  FROM notes 
+                                  WHERE tag1 LIKE :tag 
+                                  OR tag2 LIKE :tag 
+                                  OR tag3 LIKE :tag 
+                                  OR tag4 LIKE :tag
+                                  ORDER BY createData DESC"
+                    );
+                    $stmt->bindValue('tag', $tag);
+
+                    $stmt->execute();
+                } catch (DBALException $e) {
+                    return array('code' => 204, 'msg' => 'No notes found with that tag');
+                }
+
+                $notes = $stmt->fetchAll();
+
+                if ($notes != null || !empty($notes)) {
+                    return array('code' => 200, 'msg' => $notes);
+                } else {
+                    return array('code' => 204, 'msg' => 'No notes found with that tag');
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -18,7 +18,7 @@ $app->post('/insert', NotesAction::class . ':insert');
 
 $app->delete('/remove', NotesAction::class . ':remove');
 
-$app->get('/getAllWithTag', NotesAction::class . ':addTagOnNote');
+$app->get('/getAllWithTag', NotesAction::class . ':getAllWithTag');
 
 $app->put('/addTagOnNote', NotesAction::class . ':addTagOnNote');
 

@@ -115,6 +115,15 @@ class NotesAction
         }
     }
 
+    public function getAllWithTag(Request $request, Response $response, array $args)
+    {
+        $tag = $request->getParam('tag');
+        $optionalSort = $request->getParam('sort') ?: null;
+
+        $arrResult = $this->noteResource->getAllWithTagAction($tag, $optionalSort);
+        return $response->withJson($arrResult, $arrResult['code']);
+    }
+
     /**
      * @param Request $request
      * @param Response $response
