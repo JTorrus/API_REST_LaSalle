@@ -124,6 +124,37 @@ class NotesAction
         return $response->withJson($arrResult, $arrResult['code']);
     }
 
+    public function updateNote(Request $request, Response $response, array $args)
+    {
+        $body = $request->getParsedBody();
+        $id = $body['id'];
+        $title = $body['title'];
+        $content = $body['content'];
+        $array = null;
+
+        if ($body['user'] != null) {
+            $array = array('user' => $body['user']);
+        }
+
+        if ($body['book'] != null) {
+            if ($array != null) {
+                $array['book'] = $body['book'];
+            } else {
+                $array = array('book' => $body['book']);
+            }
+        }
+
+        $newNote = $this->noteResource->updateNoteAction($id, $title, $content, $array);
+
+        if ($newNote != null) {
+            $arr = array('code' => 200, 'msg' => 'Note updated successfully', 'note' => $newNote);
+            return $response->withJson($arr, 200);
+        } else {
+            $arr = array('code' => 409, 'msg' => 'Could not update note');
+            return $response->withJson($arr, 409);
+        }
+    }
+
     /**
      * @param Request $request
      * @param Response $response
@@ -190,21 +221,20 @@ class NotesAction
      * @param Response $response
      * @param array $args
      * @return Response
-     * @throws \Doctrine\ORM\ORMException
      */
     public function flipPrivate(Request $request, Response $response, array $args)
     {
         $data = $request->getParsedBody();
 
-        $responseStatus = $response->getStatusCode();
         $id = $data['id'];
+        $newNote = $this->noteResource->flipPrivateOnOne($id);
 
-        if ($responseStatus == 200) {
-            $newNote = $this->noteResource->flipPrivateOnOne($id);
-            $arr = array('code' => $responseStatus, 'msg' => 'Note updated successfully', 'note' => $newNote);
-            return $response->withJson($arr, $responseStatus);
+        if ($newNote != null) {
+            $arr = array('code' => 200, 'msg' => 'Note updated successfully', 'note' => $newNote);
+            return $response->withJson($arr, 200);
+        } else {
+            $arr = array('code' => 409, 'msg' => 'Could not update note');
+            return $response->withJson($arr, 409);
         }
-        $arr = array('code' => $responseStatus, 'msg' => 'No notes found');
-        return $response->withJson($arr, $responseStatus);
     }
 }

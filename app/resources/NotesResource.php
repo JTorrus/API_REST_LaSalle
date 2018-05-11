@@ -6,6 +6,7 @@ use app\AbstractResource;
 use app\src\Entity\Notes;
 use DateTime;
 use Doctrine\DBAL\DBALException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Query;
 
@@ -250,6 +251,47 @@ class NotesResource extends AbstractResource
 
     /**
      * @param $id
+     * @param $title
+     * @param $content
+     * @param array|null $optionalParams
+     * @return array|null
+     */
+    public function updateNoteAction($id, $title, $content, $optionalParams = null)
+    {
+        /**
+         * @var Notes $note
+         */
+        $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
+
+        $note->setTitle($title);
+        $note->setContent($content);
+        $note->setLastmodificationdata(new DateTime());
+
+        if ($optionalParams != null || count($optionalParams) > 0) {
+            $user = $optionalParams['user'] ?: null;
+            $book = $optionalParams['book'] ?: null;
+
+            if ($book != null) {
+                $note->setBook($book);
+            }
+
+            if ($user != null) {
+                $note->setUser($user);
+            }
+        }
+
+        try {
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+            return null;
+        }
+
+        return $note->getArray();
+    }
+
+    /**
+     * @param $id
      * @param $tag
      * @return null
      * @throws ORMException
@@ -327,19 +369,27 @@ class NotesResource extends AbstractResource
 
     /**
      * @param $id
-     * @return array
-     * @throws ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return array|null
      */
     public function flipPrivateOnOne($id)
     {
-        /** @var Notes $note */
+        /**
+         * @var Notes $note
+         */
         $note = $this->entityManager->getRepository(Notes::class)->findOneBy(array('id' => $id));
 
-        $note->setPrivate(!$note->getPrivate());
+        if ($note != null) {
+            $note->setPrivate(!$note->getPrivate());
+        } else {
+            return null;
+        }
 
-        $this->entityManager->merge($note);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->merge($note);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+            return null;
+        }
 
         return $note->getArray();
     }
