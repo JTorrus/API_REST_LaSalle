@@ -2,8 +2,6 @@
 
 namespace app\src\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Notes
  *
@@ -107,107 +105,19 @@ class Notes
     }
 
     /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getPrivate(): ?bool
-    {
-        return $this->private;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTag1(): ?string
-    {
-        return $this->tag1;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTag2(): ?string
-    {
-        return $this->tag2;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTag3(): ?string
-    {
-        return $this->tag3;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTag4(): ?string
-    {
-        return $this->tag4;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getBook(): ?string
-    {
-        return $this->book;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getCreatedata(): ?\DateTime
-    {
-        return $this->createdata;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getLastmodificationdata(): ?\DateTime
-    {
-        return $this->lastmodificationdata;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getUser(): ?string
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return array
-     */
-    public function getArray()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
      * @param int $id
      */
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     /**
@@ -219,11 +129,27 @@ class Notes
     }
 
     /**
+     * @return null|string
+     */
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    /**
      * @param null|string $content
      */
     public function setContent(?string $content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getPrivate(): ?bool
+    {
+        return $this->private;
     }
 
     /**
@@ -235,11 +161,27 @@ class Notes
     }
 
     /**
+     * @return null|string
+     */
+    public function getTag1(): ?string
+    {
+        return $this->tag1;
+    }
+
+    /**
      * @param null|string $tag1
      */
     public function setTag1(?string $tag1): void
     {
         $this->tag1 = $tag1;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag2(): ?string
+    {
+        return $this->tag2;
     }
 
     /**
@@ -251,11 +193,27 @@ class Notes
     }
 
     /**
+     * @return null|string
+     */
+    public function getTag3(): ?string
+    {
+        return $this->tag3;
+    }
+
+    /**
      * @param null|string $tag3
      */
     public function setTag3(?string $tag3): void
     {
         $this->tag3 = $tag3;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTag4(): ?string
+    {
+        return $this->tag4;
     }
 
     /**
@@ -267,11 +225,27 @@ class Notes
     }
 
     /**
+     * @return null|string
+     */
+    public function getBook(): ?string
+    {
+        return $this->book;
+    }
+
+    /**
      * @param null|string $book
      */
     public function setBook(?string $book): void
     {
         $this->book = $book;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getCreatedata(): ?\DateTime
+    {
+        return $this->createdata;
     }
 
     /**
@@ -283,6 +257,14 @@ class Notes
     }
 
     /**
+     * @return \DateTime|null
+     */
+    public function getLastmodificationdata(): ?\DateTime
+    {
+        return $this->lastmodificationdata;
+    }
+
+    /**
      * @param \DateTime|null $lastmodificationdata
      */
     public function setLastmodificationdata(?\DateTime $lastmodificationdata): void
@@ -291,11 +273,27 @@ class Notes
     }
 
     /**
+     * @return null|string
+     */
+    public function getUser(): ?string
+    {
+        return $this->user;
+    }
+
+    /**
      * @param null|string $user
      */
     public function setUser(?string $user): void
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getArray()
+    {
+        return get_object_vars($this);
     }
 
 

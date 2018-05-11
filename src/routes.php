@@ -1,8 +1,6 @@
 <?php
 
 use app\src\Action\NotesAction;
-use Slim\Http\Request;
-use Slim\Http\Response;
 
 // Routes
 

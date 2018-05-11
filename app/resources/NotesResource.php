@@ -6,9 +6,7 @@ use app\AbstractResource;
 use app\src\Entity\Notes;
 use DateTime;
 use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Query;
 
 class NotesResource extends AbstractResource
 {

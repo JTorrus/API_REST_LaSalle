@@ -13,15 +13,15 @@ return [
                     'app\src\Entity'
                 ],
                 'auto_generate_proxies' => true,
-                'proxy_dir' =>  __DIR__.'/../cache/proxies',
+                'proxy_dir' => __DIR__ . '/../cache/proxies',
                 'cache' => null,
             ],
 
             'connection' => [
-                'driver'   => 'pdo_mysql',
-                'host'     => 'localhost',
-                'dbname'   => 'm06practicaslim',
-                'user'     => 'root',
+                'driver' => 'pdo_mysql',
+                'host' => 'localhost',
+                'dbname' => 'm06practicaslim',
+                'user' => 'root',
                 'password' => null,
             ]
         ],
